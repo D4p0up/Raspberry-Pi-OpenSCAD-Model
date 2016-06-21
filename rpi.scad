@@ -1,9 +1,10 @@
 //everything in mm
+//RPI 3
 
 use <pin_headers.scad>;
 
 width = 56;
-length = 85;
+length = 85.6;
 height = 1.5;
 
 
@@ -11,7 +12,7 @@ module ethernet ()
 	{
 	//ethernet port
 	color("silver")
-	translate([length-20,1.5,height]) cube([21.2,16,13.3]); 
+	translate([length-20,2.75,height]) cube([21.2,16,13.3]); 
 	}
 
 
@@ -19,75 +20,59 @@ module usb ()
 	{
 	//usb port
 	color("silver")
-	translate([length-9.5,25,height]) cube([17.3,13.3,16]);
+	translate([length-16,22.5,height]) cube([17.3,13.3,16]);
+	translate([length-16,40,height]) cube([17.3,13.3,16]);        
 	}
-
-module composite ()
-	{
-	//composite port
-	translate([length-43.6,width-12,height])
-		{
-		color("yellow")
-		cube([10,10,13]);
-
-		translate([5,19,8])
-		rotate([90,0,0])
-		color([.9,.9,.9])
-		cylinder(h = 9.3, r = 4.15, $fs=.5);
-		}
-	}
-
-module audio ()
-	{
-	//audio jack
-	translate([length-26,width-11.5,height])
-		{
-		color([.4,.4,.95])
-		cube([12.1,11.5,10.1]);
-		translate([6,11.5,10.1-(6.7/2)])
-		rotate([-90,0,0])
-		color([.4,.4,.95])
-		cylinder(h = 3.5, r = 6.7/2, $fs=.5);
-		}
-	}
-
 
 module gpio ()
 	{
 	//headers
 	rotate([0,0,180])
-	translate([-1,-width+6,height])
-	off_pin_header(rows = 13, cols = 2);
+	translate([-7,-width+6,height])
+	off_pin_header(rows = 20, cols = 2);
 	}
 
 module hdmi ()
 	{
 	color ("silver")
-	translate ([37.1,-1,height])
+	translate ([25,-1,height])
 	cube([15.1,11.7,8-height]);
 	}
+
+module audio ()
+	{
+	color ([.2,.2,.2])
+	translate ([51,0,height])
+	cube([6.5,12.8,6.5]);
+    translate ([54.25,0,height+3.25]) color ([.2,.2,.2])
+    rotate([90,0,0])
+    cylinder(r=2.75,h=2,$fn=50);
+	}    
 
 module power ()
 	{
 	color("silver")
-	translate ([-0.8,3.8,height])
-	cube ([5.6, 8,4.4-height]);
+	translate ([7,-0.8,height])
+	cube ([8, 5.6,4.4-height]);
 	}
 
-module sd ()
+module cpu ()
 	{
-	color ([0,0,0])
-	translate ([0.9, 15.2,-5.2+height ])
-	cube ([16.8, 28.5, 5.2-height]);
-
-	color ([.2,.2,.7])
-	translate ([-17.3,17.7,-2.9])
-	cube ([32, 24, 2] );
+	color ([.3,.3,.3])
+	translate ([22.3,23.7,1.5])
+	cube ([15, 15, 1] );
+	}
+    
+module controller ()
+	{
+	color ([.3,.3,.3])
+	translate ([50.3,28.7,1.5])
+	cube ([9, 9, .8] );
 	}
 
 module mhole ()
 	{
-	cylinder (r=3/2, h=height+.2, $fs=0.1);
+	cylinder (r=1.375, h=height+.2, $fs=0.1);
 	}
 
 module pcb ()
@@ -97,47 +82,51 @@ module pcb ()
 		color([0.2,0.5,0])
 		linear_extrude(height = height)
 		square([length,width]); //pcb
-		translate ([25.5, 18,-0.1]) mhole (); 
-		translate ([length-5, width-12.5, -0.1]) mhole (); 
+		translate ([3.5, 3.5,-0.1]) mhole (); 
+        translate ([3.5, 52.5,-0.1]) mhole ();        
+		translate ([61.5, 3.5,-0.1]) mhole (); 
+        translate ([61.5, 52.5,-0.1]) mhole ();    
 		}
 	}
 
 module leds()
 	{
 		// act
-		color([0.9,0.1,0,0.6])
-		translate([length-11.5,width-7.55,height]) led();
+		color([0.9,0.9,0,0.6])
+		translate([1.5,47,height]) led();
 		// pwr
-		color([0.9,0.1,0,0.6])
-		translate([length-9.45,width-7.55,height]) led();
-
-		// fdx
-		color([0.9,0.1,0,0.6])
-		translate([length-6.55,width-7.55,height]) led();
-		// lnk
-		color([0.9,0.1,0,0.6])
-		translate([length-4.5,width-7.55,height]) led();
-		// 100
-		color([0.9,0.1,0,0.6])
-		translate([length-2.45,width-7.55,height]) led();
+		color([0.1,0.8,0,0.6])
+		translate([1.5,44,height]) led();
 	}
 module led()
 	{
 		cube([1.0,1.6,0.7]);
 	}
 
+module videon ()
+    {
+        color([0.2,0.16,0.2])
+		translate([1.5,16.5,height])
+        cube([4,21,1.5]);
+        color([0.2,0.16,0.2])
+        translate([44,0.5,height])
+        cube([4,21,1.5]);        
+    }
+
+
 module rpi ()
 	{
 		pcb ();
 		ethernet ();
 		usb (); 
-		composite (); 
-		audio (); 
 		gpio (); 
 		hdmi ();
 		power ();
-		sd ();
+		cpu ();
+        controller ();
+        audio ();
 		leds ();
+        videon ();
 	}
 
 rpi (); 
