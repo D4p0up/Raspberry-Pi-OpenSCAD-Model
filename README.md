@@ -1,5 +1,6 @@
-Raspberry-Pi-OpenSCAD-Model
+Raspberry-Pi3-OpenSCAD-Model
 ===========================
-Some dimensions taked from http://www.raspberrypi-spy.co.uk/2012/03/mechanical-data-dimensions/ others directly measured.
-![Raspberry Pi](rpi.png?raw=true)
+Dimensions taken from http://i.stack.imgur.com/FYQLf.png
+
+!(rpi.png?raw=true)
 
